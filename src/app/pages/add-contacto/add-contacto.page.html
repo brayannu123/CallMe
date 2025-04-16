@@ -1,0 +1,51 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Contacto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="contactForm" (ngSubmit)="addContact()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Número de Teléfono</ion-label>
+        <ion-input
+          formControlName="phoneNumber"
+          type="tel"
+          placeholder="Ej: 3101234567">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input
+          formControlName="name"
+          type="text"
+          placeholder="jesus">
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger" *ngIf="contactForm.get('phoneNumber')?.errors?.['required'] && (contactForm.get('phoneNumber')?.dirty || contactForm.get('phoneNumber')?.touched)">
+        <p>El número de teléfono es requerido</p>
+      </ion-text>
+      <ion-text color="danger" *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern']">
+        <p>Debe tener exactamente 10 dígitos</p>
+      </ion-text>
+    </ion-list>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="!contactForm.valid || loading">
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      <span *ngIf="!loading">Agregar Contacto</span>
+    </ion-button>
+
+    <ion-text color="danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </ion-text>
+  </form>
+</ion-content>

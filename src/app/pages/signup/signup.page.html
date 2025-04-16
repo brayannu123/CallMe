@@ -1,0 +1,75 @@
+<ion-content class="ion-padding signup-content">
+  <div class="login-container">
+    <div class="login-header ion-text-center">
+      <ion-icon name="person-add-outline" class="login-avatar"></ion-icon>
+      <h1 class="login-title">Únete a CALLME</h1>
+      <p class="login-subtitle">Crea tu cuenta para empezar</p>
+    </div>
+
+    <form [formGroup]="regForm" (ngSubmit)="signUp()" novalidate>
+      <ion-item class="custom-input">
+        <ion-icon name="person-outline" slot="start" class="input-icon"></ion-icon>
+        <ion-input
+          type="text"
+          placeholder="Nombre completo"
+          formControlName="fullname"
+          required>
+        </ion-input>
+        <div *ngIf="errorControl?.['fullname'].invalid && (errorControl?.['fullname'].touched || errorControl?.['fullname'].dirty)">
+          <ion-text color="danger">Por favor, introduce tu nombre completo.</ion-text>
+        </div>
+      </ion-item>
+
+      <ion-item class="custom-input">
+        <ion-icon name="mail" slot="start" class="input-icon"></ion-icon>
+        <ion-input
+          type="email"
+          placeholder="Correo electrónico"
+          formControlName="email"
+          required
+          autocomplete="email">
+        </ion-input>
+        <div *ngIf="errorControl?.['email'].invalid && (errorControl?.['email'].touched || errorControl?.['email'].dirty)">
+          <ion-text color="danger">Por favor, introduce un correo electrónico válido.</ion-text>
+        </div>
+      </ion-item>
+
+      <ion-item class="custom-input">
+        <ion-icon name="call-outline" slot="start" class="input-icon"></ion-icon>
+        <ion-input
+          type="tel"
+          placeholder="Número de celular (opcional)"
+          formControlName="phone"
+          autocomplete="tel">
+        </ion-input>
+        <div *ngIf="errorControl?.['phone'].invalid && (errorControl?.['phone'].touched || errorControl?.['phone'].dirty)">
+          <ion-text color="danger">Por favor, introduce un número de celular válido.</ion-text>
+        </div>
+      </ion-item>
+
+      <ion-item class="custom-input">
+        <ion-icon name="lock-closed" slot="start" class="input-icon"></ion-icon>
+        <ion-input
+          type="password"
+          placeholder="Contraseña"
+          formControlName="password"
+          required
+          autocomplete="new-password">
+        </ion-input>
+        <div *ngIf="errorControl?.['password'].invalid && (errorControl?.['password'].touched || errorControl?.['password'].dirty)">
+          <ion-text color="danger">
+            La contraseña es requerida y debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.
+          </ion-text>
+        </div>
+      </ion-item>
+
+      <ion-button expand="block" size="large" type="submit" class="sign-in-button signup-button" [disabled]="regForm.invalid">
+        Crear Cuenta
+      </ion-button>
+    </form>
+
+    <div class="register-link ion-text-center">
+      <p>¿Ya tienes una cuenta? <a routerLink="/login">Iniciar sesión</a></p>
+    </div>
+  </div>
+</ion-content>
