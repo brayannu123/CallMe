@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Llamada entrante</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ callData?.name }} te está llamando</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button expand="block" color="success" (click)="acceptCall()">Aceptar</ion-button>
+      <ion-button expand="block" color="danger" (click)="rejectCall()">Rechazar</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

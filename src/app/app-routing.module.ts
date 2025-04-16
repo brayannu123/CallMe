@@ -29,6 +29,10 @@ const routes: Routes = [
     path: 'add-contacto',
     loadChildren: () => import('./pages/add-contacto/add-contacto.module').then(m => m.AddContactoPageModule)
   },
+  {
+    path: 'call',
+    loadChildren: () => import('./pages/call/call.module').then( m => m.CallPageModule)
+  },
 
 
 ];

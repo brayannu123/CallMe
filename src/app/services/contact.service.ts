@@ -61,10 +61,15 @@ export class ContactService {
   async addContact(uid: string, contact: Omit<Contact, 'uid'>): Promise<string> {
     try {
       const contactsRef = collection(this.firestore, `users/${uid}/contacts`);
+
+      const defaultAvatar = 'assets/default-avatar.png';
+
       const docRef = await addDoc(contactsRef, {
         ...contact,
+        photoURL: contact.photoURL|| defaultAvatar,
         createdAt: new Date()
       });
+
       return docRef.id;
     } catch (error) {
       console.error('Error adding contact:', error);
@@ -94,7 +99,7 @@ export class ContactService {
     }
   }
 
- 
+
   getContact(uid: string, contactId: string): Observable<Contact | undefined> {
     const contactDoc = doc(this.firestore, `users/${uid}/contacts/${contactId}`);
     return from(getDoc(contactDoc)).pipe(

@@ -4,6 +4,7 @@ import { Contact } from '../../models/contact.model';
 import { Auth } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',

@@ -52,7 +52,7 @@ export class AddContactoPage {
       const contactUid = await this.contactService.findUserByPhoneNumber(phone);
 
       if (contactUid==null) {
-        throw new Error('El número no está registrado en la aplicación');
+        throw new Error('El número se encuentra autenticado');
       }
 
       const contact: Contact = {
