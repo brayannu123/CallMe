@@ -30,6 +30,10 @@ export class AddContactoPage {
     });
   }
 
+  async onSubmit() {
+    await this.addContact();  
+  }
+
   async addContact() {
     const loading = await this.loadingCtrl.create({
       message: 'Verificando contacto...',

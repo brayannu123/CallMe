@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule, // Añade esto
+    ReactiveFormsModule, 
     IonicModule,
     RouterModule.forChild([{ path: '', component: AddContactoPage }])
   ],

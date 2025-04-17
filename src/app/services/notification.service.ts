@@ -24,6 +24,11 @@ export class NotificationService {
           await this.saveTokenToFirestore(user.uid, token.value);
         });
 
+        PushNotifications.addListener('pushNotificationReceived', (notification) => {
+          console.log('🔔 Notificación recibida:', notification);
+        });
+
+
         PushNotifications.addListener('registrationError', (err) => {
           console.error('Registration error:', err);
         });

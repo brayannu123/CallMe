@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "130878798127",
+    "project_id": "callme-9290b",
+    "storage_bucket": "callme-9290b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130878798127:android:c86e47c7cca1be222849da",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEObeBAjvZEh1wxfeKTZsu3zYfdNIdjbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
