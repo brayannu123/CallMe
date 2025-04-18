@@ -1,3 +1,21 @@
+/* En tu archivo .page.scss o .global.scss */
 ion-card {
-  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+ion-card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--ion-color-primary); /* Usando una variable de color primario */
+}
+
+ion-button.success {
+  --background: var(--ion-color-success);
+  --color: #fff;
+}
+
+ion-button.danger {
+  --background: var(--ion-color-danger);
+  --color: #fff;
 }

@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       try {
-        await this.authService.loginUser(email, password); 
+        await this.authService.loginUser(email, password);
         await loading.dismiss();
         this.router.navigate(['/home']);
       } catch (error: any) {
@@ -47,7 +47,7 @@ export class LoginPage implements OnInit {
         if (error.code === 'auth/invalid-email') {
           message = 'El correo electrónico no es válido.';
         } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-          message = 'Credenciales incorrectas.';
+          message = error.message || message;
         }
         this.presentToast(message);
         await loading.dismiss();

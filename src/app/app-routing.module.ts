@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'call',
     loadChildren: () => import('./pages/call/call.module').then( m => m.CallPageModule)
   },
+  {
+    path: 'prueba',
+    loadChildren: () => import('./pages/prueba/prueba.module').then( m => m.PruebaPageModule)
+  },
 
 
 ];
