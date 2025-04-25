@@ -3,7 +3,7 @@ import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
 import { Auth } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
-
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -20,10 +20,11 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private contactService: ContactService,
-    private auth: Auth
+    private auth: Auth,
+    private toastService: ToastService
   ) {}
 
-  ngOnInit() {
+   async ngOnInit() {
     const user = this.auth.currentUser;
 
     if (user) {
@@ -36,11 +37,13 @@ export class HomePage implements OnInit, OnDestroy {
           console.error(err);
           this.error = err.message || 'Error cargando contactos';
           this.loading = false;
+          this.toastService.present(this.error, 3000, 'danger');
         },
       });
     } else {
       this.error = 'Usuario no autenticado';
       this.loading = false;
+       await this.toastService.present(this.error, 3000, 'danger');
     }
   }
 

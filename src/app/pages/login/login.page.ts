@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 import { AuthenticationService } from '../../authentication.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -12,59 +13,81 @@ import { AuthenticationService } from '../../authentication.service';
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
+  isAndroid: boolean;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private toastService: ToastService,
+    private platform: Platform
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
+    this.isAndroid = this.platform.is('android');
   }
 
   ngOnInit() {
+    this.checkAuthState();
   }
 
-  async login() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Iniciando sesión...',
-    });
-    await loading.present();
-
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      try {
-        await this.authService.loginUser(email, password);
-        await loading.dismiss();
+  async checkAuthState() {
+    try {
+      const user = await this.authService.getProfile();
+      if (user) {
         this.router.navigate(['/home']);
-      } catch (error: any) {
-        console.error('Error al iniciar sesión:', error);
-        let message = 'Error al iniciar sesión.';
-        if (error.code === 'auth/invalid-email') {
-          message = 'El correo electrónico no es válido.';
-        } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-          message = error.message || message;
-        }
-        this.presentToast(message);
-        await loading.dismiss();
       }
-    } else {
-      this.presentToast('Por favor, introduce tu correo electrónico y contraseña.');
-      await loading.dismiss();
+    } catch {
+      console.log('No hay usuario autenticado');
     }
   }
 
-  async presentToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'bottom'
+  async login() {
+    if (!this.loginForm.valid) {
+      this.toastService.present('Por favor, completa correctamente todos los campos.', 3000, 'danger');
+      return;
+    }
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...',
+      spinner: 'crescent',
+      backdropDismiss: false,
     });
-    await toast.present();
+
+    try {
+      await loading.present();
+
+      const { email, password } = this.loginForm.value;
+      console.log('Intento de login en plataforma:', this.isAndroid ? 'Android' : 'Web');
+
+      const userCredential = await this.authService.loginUser(email, password);
+      console.log('Login exitoso:', userCredential);
+
+      await loading.dismiss();
+      this.router.navigate(['/home'], { replaceUrl: true });
+
+    } catch (error: any) {
+      console.error('Error completo en login:', error);
+      await loading.dismiss();
+
+      const errorMessages: { [code: string]: string } = {
+        'auth/invalid-email': 'El formato del correo electrónico no es válido.',
+        'auth/user-disabled': 'Esta cuenta ha sido deshabilitada.',
+        'auth/user-not-found': 'No existe una cuenta con este correo electrónico.',
+        'auth/wrong-password': 'La contraseña es incorrecta.',
+        'auth/network-request-failed': 'Error de conexión. Verifica tu conexión a internet.',
+        'auth/too-many-requests': 'Demasiados intentos fallidos. Intenta más tarde.',
+      };
+
+      const message = error.code
+        ? errorMessages[error.code] || `Error: ${error.code}`
+        : 'Error al iniciar sesión.';
+
+      this.toastService.present(message, 3000, 'danger');
+    }
   }
 
   get errorControl() {

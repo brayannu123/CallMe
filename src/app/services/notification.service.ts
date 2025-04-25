@@ -34,12 +34,9 @@ export class NotificationService {
     await PushNotifications.addListener('registration', async (token) => {
       console.log('📲 Token FCM recibido:', token.value);
       const user = this.auth.currentUser;
-      if (user) {
+
         const userRef = doc(this.firestore, `users/${user.uid}`);
         await updateDoc(userRef, {token: token.value});
-      } else {
-        localStorage.setItem('fcm', token.value);
-      }
     });
 
     await PushNotifications.addListener('registrationError', (err) => {

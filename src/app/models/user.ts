@@ -4,4 +4,6 @@ export interface User {
   apellido: string;
   correo: string;
   telefono: string;
+  token: string;
+
 }

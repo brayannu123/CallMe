@@ -1,9 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +21,7 @@ export class SignupPage implements OnInit {
     private fb: FormBuilder,
     private loadingCtrl: LoadingController,
     private router: Router,
-    private toastCtrl: ToastController
+    private toastService: ToastService
   ) {
     this.regForm = this.fb.group({
       fullname: ['', [Validators.required]],
@@ -62,34 +63,29 @@ export class SignupPage implements OnInit {
             phone: phone || null,
           });
           await loading.dismiss();
-         
+          this.toastService.present('Cuenta creada exitosamente.', 3000, 'success');
           this.router.navigate(['/login']);
         }
       } catch (error: any) {
         console.error('Error al crear la cuenta:', error);
-        let message = 'Error al crear la cuenta.';
-        if (error.code === 'auth/email-already-in-use') {
-          message = 'Este correo electrónico ya está en uso.';
-        } else if (error.code === 'auth/invalid-email') {
-          message = 'El correo electrónico no es válido.';
-        } else if (error.code === 'auth/weak-password') {
-          message = 'La contraseña debe tener al menos 8 caracteres y contener al menos una mayúscula, una minúscula y un número.';
-        }
-        this.presentToast(message);
+
+        const errorMessages: { [code: string]: string } = {
+          'auth/email-already-in-use': 'Este correo electrónico ya está en uso.',
+          'auth/invalid-email': 'El correo electrónico no es válido.',
+          'auth/weak-password': 'La contraseña debe tener al menos 8 caracteres y contener al menos una mayúscula, una minúscula y un número.',
+        };
+
+        const message = error.code
+          ? errorMessages[error.code] || 'Error al crear la cuenta.'
+          : 'Error al crear la cuenta.';
+
+        this.toastService.present(message, 3000, 'danger');
         await loading.dismiss();
       }
     } else {
       await loading.dismiss();
-      this.presentToast('Por favor, completa todos los campos correctamente.');
+      this.toastService.present('Por favor, completa todos los campos correctamente.', 3000, 'danger');
     }
   }
-
-  async presentToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'bottom',
-    });
-    await toast.present();
-  }
 }
+
