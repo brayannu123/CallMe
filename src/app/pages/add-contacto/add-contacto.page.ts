@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from 'src/app/models/contact.model';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-add-contacto',
@@ -21,7 +22,7 @@ export class AddContactoPage {
     private fb: FormBuilder,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController,
+    private toastService: ToastService,
     private contactService: ContactService
   ) {
     this.contactForm = this.fb.group({
@@ -31,7 +32,7 @@ export class AddContactoPage {
   }
 
   async onSubmit() {
-    await this.addContact();  
+    await this.addContact();
   }
 
   async addContact() {
@@ -43,7 +44,7 @@ export class AddContactoPage {
     if (!this.contactForm.valid) {
       await loading.dismiss();
       this.error = 'Por favor, introduce un número de teléfono válido (10 dígitos)';
-      this.presentToast(this.error);
+      this.toastService.present(this.error, 2000, 'danger');
       return;
     }
 
@@ -52,11 +53,10 @@ export class AddContactoPage {
     const name = this.contactForm.value.name.trim();
 
     try {
-
       const contactUid = await this.contactService.findUserByPhoneNumber(phone);
 
-      if (contactUid==null) {
-        throw new Error('El número se encuentra autenticado');
+      if (contactUid == null) {
+        throw new Error('El número no se encuentra registrado ');
       }
 
       const contact: Contact = {
@@ -70,21 +70,12 @@ export class AddContactoPage {
       await loading.dismiss();
       this.contactForm.reset();
       this.router.navigate(['/home']);
-      this.presentToast('Contacto agregado exitosamente');
+      this.toastService.present('Contacto agregado exitosamente', 2000, 'success');
     } catch (err: any) {
       await loading.dismiss();
       this.error = err.message || 'Error al agregar contacto';
-      this.presentToast(this.error);
+      this.toastService.present(this.error, 2000, 'danger');
     }
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 
   get errorControl() {

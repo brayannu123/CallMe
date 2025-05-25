@@ -61,14 +61,17 @@ export class ContactService {
   async addContact(uid: string, contact: Omit<Contact, 'uid'>): Promise<string> {
     try {
       const contactsRef = collection(this.firestore, `users/${uid}/contacts`);
-
       const defaultAvatar = 'assets/default-avatar.png';
 
       const docRef = await addDoc(contactsRef, {
         ...contact,
-        photoURL: contact.photoURL|| defaultAvatar,
-        createdAt: new Date()
+        photoURL: contact.photoURL || defaultAvatar,
+        createdAt: new Date(),
       });
+
+
+      const contactDoc = doc(this.firestore, `users/${uid}/contacts/${docRef.id}`);
+      await updateDoc(contactDoc, { uid: docRef.id });
 
       return docRef.id;
     } catch (error) {
@@ -78,15 +81,24 @@ export class ContactService {
   }
 
 
+
   async deleteContact(uid: string, contactId: string): Promise<void> {
     try {
-      const contactDoc = doc(this.firestore, `users/${uid}/contacts/${contactId}`);
-      await deleteDoc(contactDoc);
+      console.log('UID del usuario:', uid);
+      console.log('Eliminando contacto con ID:', contactId);
+
+
+      const contactDocRef = doc(this.firestore, `users/${uid}/contacts/${contactId}`);
+
+
+      await deleteDoc(contactDocRef);
+      console.log('Contacto eliminado correctamente');
     } catch (error) {
       console.error('Error deleting contact:', error);
       throw new Error('Error al eliminar contacto');
     }
   }
+
 
 
   async updateContact(uid: string, contactId: string, changes: Partial<Contact>): Promise<void> {
@@ -115,4 +127,18 @@ export class ContactService {
       })
     );
   }
+
+  async getContactByPhoneNumber(uid: string, phoneNumber: string): Promise<Contact | undefined> {
+    const contactsRef = collection(this.firestore, `users/${uid}/contacts`);
+    const q = query(contactsRef, where('phoneNumber', '==', phoneNumber));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      return { uid: doc.id, ...doc.data() } as Contact;
+    }
+    return undefined;
+  }
+  
+
 }

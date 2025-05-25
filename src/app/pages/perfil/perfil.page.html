@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleEdit()">
+        {{ isEditing ? 'Cancelar' : 'Editar' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="user">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="user.nombre" [readonly]="!isEditing"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Apellido</ion-label>
+      <ion-input [(ngModel)]="user.apellido" [readonly]="!isEditing"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Correo</ion-label>
+      <ion-input [value]="user.correo" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Teléfono</ion-label>
+      <ion-input [(ngModel)]="user.phone" [readonly]="!isEditing"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="success" *ngIf="isEditing" (click)="guardarCambios()">
+    Guardar Cambios
+  </ion-button>
+</ion-content>

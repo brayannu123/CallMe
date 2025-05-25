@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding chat-content">
+  <div *ngIf="messages$ | async as messages">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [class.mine]="msg.senderId === currentUserId"
+    >
+
+      <div *ngIf="msg.type === 'text'" class="bubble">
+        {{ msg.content }}
+      </div>
+
+
+      <div *ngIf="msg.type === 'audio'" class="bubble audio-msg">
+        <ion-icon name="mic"></ion-icon>
+        <audio [src]="msg.content" controls></audio>
+      </div>
+
+
+      <div *ngIf="msg.type === 'file'" class="bubble file-msg">
+        <ion-icon name="document"></ion-icon>
+        <a [href]="msg.content" target="_blank">
+          {{ msg.filename || 'Archivo adjunto' }}
+        </a>
+      </div>
+
+
+      <div *ngIf="msg.type === 'image'" class="bubble media-msg">
+        <img [src]="msg.content" alt="imagen enviada" />
+      </div>
+
+
+      <div *ngIf="msg.type === 'video'" class="bubble media-msg">
+        <video [src]="msg.content" controls></video>
+      </div>
+
+
+      <div *ngIf="msg.type === 'location'" class="bubble location-msg">
+        <ion-icon name="location"></ion-icon>
+        <ion-button fill="clear" size="small" (click)="openMap(msg.content)">
+          Ver ubicación
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="chat-footer">
+  <ion-toolbar>
+    <ion-item lines="none" class="input-wrapper">
+
+      <ion-buttons slot="start">
+        <ion-button fill="clear" (click)="pickImage()" class="camera-btn">
+          <ion-icon slot="icon-only" name="camera"></ion-icon>
+        </ion-button>
+
+     <ion-button fill="clear" (click)="pickFile()" class="file-btn">
+          <ion-icon slot="icon-only" name="attach"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-input
+        [(ngModel)]="newMessage"
+        placeholder="Escribe un mensaje..."
+        class="message-input"
+      ></ion-input>
+
+
+      <ion-buttons slot="end">
+      <ion-button
+        fill="clear"
+        color="danger"
+        size="small"
+       (click)="recordAndSendAudio()"
+>
+      <ion-icon
+       [name]="isRecording ? 'square' : 'mic'"
+       slot="icon-only"
+       ></ion-icon>
+      </ion-button>
+
+
+        <ion-button
+          fill="clear"
+          color="primary"
+          size="small"
+          (click)="sendMessage()"
+          [disabled]="!newMessage.trim()"
+        >
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

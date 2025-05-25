@@ -5,6 +5,7 @@ import { LoadingController, Platform } from '@ionic/angular';
 import { AuthenticationService } from '../../authentication.service';
 import { ToastService } from 'src/app/services/toast.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -65,6 +66,9 @@ export class LoginPage implements OnInit {
 
       const userCredential = await this.authService.loginUser(email, password);
       console.log('Login exitoso:', userCredential);
+
+     localStorage.setItem('user_id',userCredential.user.uid);
+     console.log("hola mundo");
 
       await loading.dismiss();
       this.router.navigate(['/home'], { replaceUrl: true });

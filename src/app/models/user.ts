@@ -3,7 +3,7 @@ export interface User {
   nombre: string;
   apellido: string;
   correo: string;
-  telefono: string;
+  phone: string;
   token: string;
 
 }

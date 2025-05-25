@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { ChatPage } from './pages/chat/chat.page';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -33,9 +34,15 @@ const routes: Routes = [
     path: 'call',
     loadChildren: () => import('./pages/call/call.module').then( m => m.CallPageModule)
   },
+
   {
-    path: 'prueba',
-    loadChildren: () => import('./pages/prueba/prueba.module').then( m => m.PruebaPageModule)
+    path: 'chat/:id',
+    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+  },
+ 
+  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
 
 
