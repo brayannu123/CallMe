@@ -1,9 +1,7 @@
 export interface User {
   uid?: string;
-  nombre: string;
-  apellido: string;
-  correo: string;
+  fullname: string;
+  email: string;
   phone: string;
   token: string;
-
 }

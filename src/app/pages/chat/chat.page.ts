@@ -54,12 +54,11 @@ export class ChatPage implements OnInit {
 
    async  ngOnInit () {
     this.otherUserId = this.route.snapshot.paramMap.get('id') || '';
-    console.log("hola" + localStorage.getItem('user_id'))
     this.currentUserId = localStorage.getItem('user_id') || '';
     let telefono = "";
      const user = await this.userService.get(this.currentUserId)
      telefono = user.phone
-   console.log("Jesus me salva"+telefono)
+
 
     this.chatService
       .createChat(telefono,this.otherUserId)

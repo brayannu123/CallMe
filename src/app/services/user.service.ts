@@ -63,11 +63,12 @@ export class UserService {
     await updateDoc(this.userRef(uid), { token });
   }
 
-  async getCurrentUser(): Promise<User | null> {
-    const currentUser = this.auth.currentUser;
-    if (!currentUser) return null;
+async getCurrentUser(): Promise<User | null> {
+  const currentUser = this.auth.currentUser;  
+  if (!currentUser) return null;
 
-    const user = await this.get(currentUser.uid);
-    return user || null;
-  }
+  const user = await this.get(currentUser.uid);
+  return user || null;
+}
+
 }

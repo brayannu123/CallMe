@@ -3,7 +3,21 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
+
     <ion-title>Chat</ion-title>
+
+
+    <ion-buttons slot="end">
+      
+      <ion-button fill="clear">
+        <ion-icon slot="icon-only" name="call"></ion-icon>
+      </ion-button>
+
+
+      <ion-button fill="clear">
+        <ion-icon slot="icon-only" name="videocam"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -19,12 +33,10 @@
         {{ msg.content }}
       </div>
 
-
       <div *ngIf="msg.type === 'audio'" class="bubble audio-msg">
         <ion-icon name="mic"></ion-icon>
         <audio [src]="msg.content" controls></audio>
       </div>
-
 
       <div *ngIf="msg.type === 'file'" class="bubble file-msg">
         <ion-icon name="document"></ion-icon>
@@ -33,16 +45,13 @@
         </a>
       </div>
 
-
       <div *ngIf="msg.type === 'image'" class="bubble media-msg">
         <img [src]="msg.content" alt="imagen enviada" />
       </div>
 
-
       <div *ngIf="msg.type === 'video'" class="bubble media-msg">
         <video [src]="msg.content" controls></video>
       </div>
-
 
       <div *ngIf="msg.type === 'location'" class="bubble location-msg">
         <ion-icon name="location"></ion-icon>
@@ -63,7 +72,7 @@
           <ion-icon slot="icon-only" name="camera"></ion-icon>
         </ion-button>
 
-     <ion-button fill="clear" (click)="pickFile()" class="file-btn">
+        <ion-button fill="clear" (click)="pickFile()" class="file-btn">
           <ion-icon slot="icon-only" name="attach"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -74,20 +83,18 @@
         class="message-input"
       ></ion-input>
 
-
       <ion-buttons slot="end">
-      <ion-button
-        fill="clear"
-        color="danger"
-        size="small"
-       (click)="recordAndSendAudio()"
->
-      <ion-icon
-       [name]="isRecording ? 'square' : 'mic'"
-       slot="icon-only"
-       ></ion-icon>
-      </ion-button>
-
+        <ion-button
+          fill="clear"
+          color="danger"
+          size="small"
+          (click)="recordAndSendAudio()"
+        >
+          <ion-icon
+            [name]="isRecording ? 'square' : 'mic'"
+            slot="icon-only"
+          ></ion-icon>
+        </ion-button>
 
         <ion-button
           fill="clear"

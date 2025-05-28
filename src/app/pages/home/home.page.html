@@ -1,42 +1,45 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary" class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-buttons slot="start">
+  <ion-menu-button color="light"></ion-menu-button>
+    <ion-button [routerLink]="['/perfil']" fill="clear" color="light">
+     <ion-icon name="person-circle-outline"></ion-icon>
+     </ion-button>
     </ion-buttons>
-    <ion-title>Contactos</ion-title>
+    </ion-buttons>
+    <ion-title class="title-bold">Contactos</ion-title>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/add-contacto']">
+      <ion-button [routerLink]="['/add-contacto']" fill="clear" color="light" class="add-btn">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
-
-<ion-content class="ion-padding">
+<ion-content class="custom-content">
   <div class="ion-text-center" *ngIf="loading">
-    <ion-spinner name="crescent"></ion-spinner>
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
   </div>
 
   <ion-text color="danger" *ngIf="error">
-    <p class="ion-text-center">{{ error }}</p>
+    <p class="ion-padding">{{ error }}</p>
   </ion-text>
 
-  <ion-list *ngIf="!loading && contacts.length > 0">
-    <ion-item-sliding *ngFor="let contact of contacts">
-      <ion-item button (click)="goToChat(contact.phoneNumber)">
-        <ion-avatar slot="start">
-          <img src="assets/icon/default-avatar.png" alt="Avatar">
+  <ion-list *ngIf="!loading && contacts.length > 0" class="contact-list">
+    <ion-item-sliding *ngFor="let contact of contacts" class="contact-item">
+      <ion-item button (click)="goToChat(contact.phoneNumber)" lines="none" class="contact-card">
+        <ion-avatar slot="start" class="avatar">
+          <img src="assets/icon/default-avatar.png" alt="Avatar" />
         </ion-avatar>
         <ion-label>
-          <h2>{{ contact.name }}</h2>
-          <p>{{ contact.phoneNumber }}</p>
+          <h2 class="contact-name">{{ contact.name }}</h2>
+          <p class="contact-phone">{{ contact.phoneNumber }}</p>
         </ion-label>
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option color="primary" (click)="editContact(contact.id)">
+        <ion-item-option color="tertiary" (click)="editContact(contact.id)">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
         </ion-item-option>
         <ion-item-option color="danger" (click)="deleteContact(contact.uid)">
@@ -55,8 +58,8 @@
 
 <ion-menu contentId="main-content">
   <ion-header>
-    <ion-toolbar>
-      <ion-title>Menú</ion-title>
+    <ion-toolbar color="primary">
+      <ion-title class="title-bold">Menú</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
@@ -72,5 +75,3 @@
     </ion-list>
   </ion-content>
 </ion-menu>
-
-

@@ -1,16 +1,16 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary" class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Agregar Contacto</ion-title>
+    <ion-title class="title-bold">Agregar Contacto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+<ion-content class="ion-padding custom-content">
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-box">
     <ion-list lines="full">
-      <ion-item>
+      <ion-item class="custom-item">
         <ion-label position="floating">Número de Teléfono</ion-label>
         <ion-input
           formControlName="phoneNumber"
@@ -22,13 +22,13 @@
         </ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="contactForm.get('phoneNumber')?.errors?.['required'] && contactForm.get('phoneNumber')?.touched">
-        <p class="ion-padding-start">El número de teléfono es requerido</p>
+        <p class="error-text">El número de teléfono es requerido</p>
       </ion-text>
       <ion-text color="danger" *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern'] && contactForm.get('phoneNumber')?.touched">
-        <p class="ion-padding-start">Debe tener exactamente 10 dígitos</p>
+        <p class="error-text">Debe tener exactamente 10 dígitos</p>
       </ion-text>
 
-      <ion-item>
+      <ion-item class="custom-item">
         <ion-label position="floating">Nombre</ion-label>
         <ion-input
           formControlName="name"
@@ -38,21 +38,22 @@
         </ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="contactForm.get('name')?.errors?.['required'] && contactForm.get('name')?.touched">
-        <p class="ion-padding-start">El nombre es requerido</p>
+        <p class="error-text">El nombre es requerido</p>
       </ion-text>
     </ion-list>
 
     <ion-button
       expand="block"
       type="submit"
-      class="ion-margin-top"
+      color="primary"
+      class="submit-btn"
       [disabled]="!contactForm.valid || loading">
       <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
       <span *ngIf="!loading">Agregar Contacto</span>
     </ion-button>
 
     <ion-text color="danger" *ngIf="error">
-      <p class="ion-padding">{{ error }}</p>
+      <p class="error-text ion-text-center">{{ error }}</p>
     </ion-text>
   </form>
 </ion-content>

@@ -22,3 +22,5 @@ import { SharedComponentsModule } from '../../shared/shared-components.module';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePageModule {}
+
+
